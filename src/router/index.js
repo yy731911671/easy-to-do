@@ -2,10 +2,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/Home/Home'
 import Mine from '@/pages/Mine/Mine'
+import Login from '@/pages/Login/Login'
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/',
+      redirect: '/home'
+    },
     {
       path: '/home',
       name: 'Home',
@@ -17,8 +22,9 @@ export default new Router({
       component: Mine
     },
     {
-      path: '/',
-      redirect: '/home'
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 })

@@ -6,7 +6,7 @@
       <div class="data-text">
         {{newsItem.text}}
       </div>
-      <div class="description">user:admin    {{item.time}}</div>
+      <div class="description">user:admin    {{newsItem.time}}</div>
   </div>
 </template>
 
@@ -41,9 +41,6 @@
 .news-detail{
   font-size: 20px;
   padding: 10px;
-  display: flex;
-  justify-content: left;
-  border-bottom: solid 1px #cbcaca;
 }
 .data-list .data-title {
   line-height: 1.4;
@@ -54,5 +51,7 @@
 .data-list .detail .description {
   font-size: 3vw;
   color: #999999;
+  border-bottom: solid 1px #cbcaca;
+
 }
 </style>

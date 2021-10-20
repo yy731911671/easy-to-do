@@ -8,7 +8,7 @@
       <span class="item_icon">
         <van-icon name="new-o" />
       </span>
-      <span>News</span>
+      <span @click="goTo('/news')">News</span>
     </span>
     <span
       class="guide_item"

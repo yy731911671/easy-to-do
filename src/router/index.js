@@ -3,6 +3,9 @@ import Router from 'vue-router'
 import Home from '@/pages/Home/Home'
 import Mine from '@/pages/Mine/Mine'
 import Login from '@/pages/Login/Login'
+import ToDo from '@/pages/ToDo/Todo'
+import News from '../pages/News/News'
+import NewsDetail from '../pages/News/NewsDetail'
 Vue.use(Router)
 
 export default new Router({

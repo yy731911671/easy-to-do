@@ -1,6 +1,6 @@
 <template>
-  <section class="home">
-    <HeaderTop title="News"></HeaderTop>
+  <section class="todo">
+    <HeaderTop title="ToDo"></HeaderTop>
 
   </section>
 </template>
@@ -8,7 +8,7 @@
 <script>
 import HeaderTop from '@/components/HeaderTop/HeaderTop.vue'
 export default {
-  name: 'Home',
+  name: 'ToDo',
   data () {
     return {
 

@@ -39,19 +39,25 @@
 
 <style scoped>
 .news-detail{
-  font-size: 20px;
   padding: 10px;
+  overflow-x: hidden;
 }
-.data-list .data-title {
+.news-detail .data-title {
+  font-weight: 600;
   line-height: 1.4;
-  font-size: 4vw;
+  font-size: 6.5vw;
+  flex: 1;
+  padding-bottom: 2vh;
+}
+.news-detail .data-text {
+  line-height: 1.4;
+  font-size: 5vw;
   flex: 1;
 }
-
-.data-list .detail .description {
-  font-size: 3vw;
+.news-detail .description {
+  font-size: 5vw;
   color: #999999;
   border-bottom: solid 1px #cbcaca;
-
+  padding: 2vh;
 }
 </style>

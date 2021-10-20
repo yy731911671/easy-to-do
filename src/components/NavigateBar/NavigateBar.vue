@@ -2,8 +2,8 @@
   <div class="footer_guide">
     <span
       class="guide_item"
-      :class="{ on: '/home' === $route.path }"
-      @click="goTo('/home')"
+      :class="{ on: '/news' === $route.path }"
+      @click="goTo('/news')"
     >
       <span class="item_icon">
         <van-icon name="new-o" />

@@ -12,7 +12,7 @@
           <div class="title van-multi-ellipsis--l2">
             {{item.title}}
           </div>
-          <div class="brief van-multi-ellipsis--l2">user:admin  {{item.time}}</div>
+          <div class="brief van-multi-ellipsis--l2">user:admin &nbsp;&nbsp;&nbsp;&nbsp;  {{item.time}}</div>
         </div>
       </div>
     </van-list>
@@ -21,6 +21,7 @@
 
 <script>
   import Vue from 'vue'
+  import {fetchNewsIdList} from '../../api/index'
   import HeaderTop from '@/components/HeaderTop/HeaderTop.vue'
   import { Button, Cell,Row ,Col, List,Divider } from 'vant';
   Vue.use(Button);
@@ -100,13 +101,12 @@
     margin-top: 50px;
   }
   .data-list {
-    padding: 10px;
     display: flex;
     justify-content: left;
-    border-bottom: solid 1px #cbcaca;
   }
 
   .data-list .detail {
+    padding: 0 10px 10px 10px;
     line-height: 1.4;
     font-size: 5vw;
     flex: 1;
@@ -115,6 +115,8 @@
   .data-list .detail .brief {
     font-size: 4vw;
     color: #999999;
+    border-bottom: solid 1px #cbcaca;
+    padding-bottom: 5px;
   }
 
 </style>

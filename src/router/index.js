@@ -46,7 +46,10 @@ export default new Router({
     {
       path: '/news',
       name: 'News',
-      component: News
+      component: News,
+      meta: {
+        showFooter: true
+      }
     },{
       path: '/newsDetail',
       name: 'NewsDetail',

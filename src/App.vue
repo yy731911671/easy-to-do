@@ -1,7 +1,7 @@
 <template>
   <div>
     <router-view />
-<!--    <NavigateBar />-->
+    <NavigateBar v-show="$route.meta.showFooter"/>
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import NavigateBar from './components/NavigateBar/NavigateBar.vue'
 export default {
   components: {
     NavigateBar
-  },
+  }
 }
 </script>
 

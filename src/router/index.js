@@ -3,8 +3,6 @@ import Router from 'vue-router'
 import Home from '@/pages/Home/Home'
 import Mine from '@/pages/Mine/Mine'
 import Login from '@/pages/Login/Login'
-import News from '../pages/News/News'
-import NewsDetail from '../pages/News/NewsDetail'
 Vue.use(Router)
 
 export default new Router({
@@ -16,12 +14,26 @@ export default new Router({
     {
       path: '/home',
       name: 'Home',
-      component: Home
+      component: Home,
+      meta: {
+        showFooter: true
+      }
     },
     {
       path: '/mine',
       name: 'Mine',
-      component: Mine
+      component: Mine,
+      meta: {
+        showFooter: true
+      }
+    },
+    {
+      path: '/todo',
+      name: 'ToDo',
+      component: ToDo,
+      meta: {
+        showFooter: true
+      }
     },
     {
       path: '/login',

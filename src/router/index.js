@@ -3,13 +3,15 @@ import Router from 'vue-router'
 import Home from '@/pages/Home/Home'
 import Mine from '@/pages/Mine/Mine'
 import Login from '@/pages/Login/Login'
+import News from '../pages/News/News'
+import NewsDetail from '../pages/News/NewsDetail'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home'
+      redirect: '/news'
     },
     {
       path: '/home',
@@ -25,6 +27,15 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
-    }
+    },
+    {
+      path: '/news',
+      name: 'News',
+      component: News
+    },{
+      path: '/newsDetail',
+      name: 'NewsDetail',
+      component: NewsDetail
+    },
   ]
 })

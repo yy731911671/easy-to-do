@@ -7,3 +7,18 @@ export function fetchList (query) {
     params: query
   })
 }
+
+
+// export function fetchNewsIdList () {
+//   return request({
+//     url: 'https://hacker-news.firebaseio.com/v0/askstories.json?print=pretty',
+//     method: 'get'
+//   })
+// }
+//
+// export function fetchNewsList (query) {
+//   return request({
+//     url: `https://hacker-news.firebaseio.com/v0/item/${query}.json?print=pretty`,
+//     method: 'get'
+//   })
+// }

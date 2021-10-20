@@ -1,9 +1,17 @@
 import request from './request'
 // 举个例子
-export function fetchList (query) {
+export function signIn (query) {
   return request({
-    url: 'bsd-import/importTask/list',
+    url: 'user',
     method: 'get',
     params: query
+  })
+}
+
+export function signUp(query) {
+  return request({
+    url: '/user',
+    method: 'post',
+    data: query
   })
 }

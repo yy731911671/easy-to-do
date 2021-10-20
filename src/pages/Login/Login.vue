@@ -97,6 +97,7 @@
 <script>
 import Vue from "vue";
 import { Form, Icon, Field, Button } from 'vant';
+import { signIn, signUp } from '@/api/index'
 Vue.use(Icon);
 Vue.use(Form);
 Vue.use(Field);
@@ -123,8 +124,10 @@ export default {
       this.email = '';
       this.phone_number = '';
     },
-    onSubmit(values) {
-      console.log(values,'submit', this.username);
+    onSubmit() {
+      if(loginWay) {
+        
+      }
     }
   }
 };

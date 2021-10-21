@@ -4,5 +4,5 @@ const devEnv = require('./dev.env')
 
 module.exports = merge(devEnv, {
   NODE_ENV: '"testing"',
-  VUE_APP_BASE_API: "localhost"
+  VUE_APP_BASE_API: ""
 })

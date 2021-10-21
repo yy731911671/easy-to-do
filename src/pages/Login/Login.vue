@@ -4,12 +4,8 @@
       <div class="login_header">
         <h2 class="login_logo">Easy-To-Do</h2>
         <div class="login_header_title">
-          <span :class="{ on: loginWay }" @click="changeLogin"
-            >Sign In</span
-          >
-          <span :class="{ on: !loginWay }" @click="changeLogin"
-            >Sign Up</span
-          >
+          <span :class="{ on: loginWay }" @click="changeLogin">Sign In</span>
+          <span :class="{ on: !loginWay }" @click="changeLogin">Sign Up</span>
         </div>
       </div>
       <van-form @submit="onSubmit" class="form">
@@ -96,24 +92,25 @@
 
 <script>
 import Vue from "vue";
-import { Form, Icon, Field, Button, Notify } from 'vant';
-import { signIn, signUp } from '@/api/index'
+import { Form, Icon, Field, Button, Notify, Dialog } from "vant";
+import { signIn, signUp } from "@/api/index";
 Vue.use(Icon);
 Vue.use(Form);
 Vue.use(Field);
 Vue.use(Button);
 Vue.use(Notify);
+Vue.use(Dialog);
 
 export default {
   name: "Login",
   data() {
     return {
       loginWay: true,
-      username: '',
-      password: '',
-      nickname: '',
-      email: '',
-      phone_number: ''
+      username: "",
+      password: "",
+      nickname: "",
+      email: "",
+      phone_number: "",
     };
   },
   methods: {
@@ -122,35 +119,106 @@ export default {
       this.clearData();
     },
     clearData() {
-      this.username = '';
-      this.password = '';
-      this.nickname = '';
-      this.email = '';
-      this.phone_number = '';
+      this.username = "";
+      this.password = "";
+      this.nickname = "";
+      this.email = "";
+      this.phone_number = "";
     },
-    async onSubmit() {
-      let response = {};
-      if(this.loginWay) {
-        response = await signIn({
-          username: this.username,
-          password: this.password
-        })
+    onSubmit() {
+      if (this.loginWay) {
+        this.onHandleSignIn();
       } else {
-        response = await signUp({
-          username: this.username,
-          password: this.password, 
-          nickname: this.nickname,
-          email: this.email,
-          phone_number: this.phone_number
-        })
+        this.onHandleSignUp();
       }
-      if(response.code === 0) {
-        $router.back();
+    },
+    async onHandleSignIn() {
+      if (this.username === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the user name",
+        }).then(() => {
+          return;
+        });
+      } else if (this.password === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the password",
+        }).then(() => {
+          return;
+        });
       } else {
-        Notify({ type: 'danger', message: 'Fail' });
+        // const response = await signIn({
+        //   username: this.username,
+        //   password: this.password,
+        // });
+        const response = { code: 0 };
+        if (response.code === 0) {
+          localStorage.setItem('ifLogin', 'true');
+          this.$router.replace("/news");
+        } else {
+          Notify({ type: "danger", message: response.message });
+        }
       }
-    }
-  }
+    },
+    async onHandleSignUp() {
+      if (this.username === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the user name",
+        }).then(() => {
+          return;
+        });
+      } else if (this.password === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the password",
+        }).then(() => {
+          return;
+        });
+      } else if (this.nickname === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the nickname",
+        }).then(() => {
+          return;
+        });
+      } else if (this.email === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the email",
+        }).then(() => {
+          return;
+        });
+      } else if (this.phone_number === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the phone number",
+        }).then(() => {
+          return;
+        });
+      } else {
+        // const response = await signUp({
+        //   username: this.username,
+        //   password: this.password,
+        //   nickname: this.nickname,
+        //   email: this.email,
+        //   phone_number: this.phone_number,
+        // });
+        const response = { code: 0 };
+        if (response.code === 0) {
+          Dialog.alert({
+            title: "Success",
+            message: "Congratulations on your successful registration",
+          }).then(() => {
+            this.changeLogin();
+          });
+        } else {
+          Notify({ type: "danger", message: response.message });
+        }
+      }
+    },
+  },
 };
 </script>
 

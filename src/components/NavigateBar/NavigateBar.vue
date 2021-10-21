@@ -2,13 +2,13 @@
   <div class="footer_guide">
     <span
       class="guide_item"
-      :class="{ on: '/home' === $route.path }"
-      @click="goTo('/home')"
+      :class="{ on: '/news' === $route.path }"
+      @click="goTo('/news')"
     >
       <span class="item_icon">
         <van-icon name="new-o" />
       </span>
-      <span>News</span>
+      <span @click="goTo('/news')">News</span>
     </span>
     <span
       class="guide_item"
@@ -59,6 +59,7 @@ export default {
   align-items: center;
   justify-content: space-around;
   border-top: 1px #e4e4e4 solid;
+  background-color: #fff;
 }
 .guide_item {
   display: flex;

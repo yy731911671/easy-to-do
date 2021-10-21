@@ -96,12 +96,13 @@
 
 <script>
 import Vue from "vue";
-import { Form, Icon, Field, Button } from 'vant';
+import { Form, Icon, Field, Button, Notify } from 'vant';
 import { signIn, signUp } from '@/api/index'
 Vue.use(Icon);
 Vue.use(Form);
 Vue.use(Field);
 Vue.use(Button);
+Vue.use(Notify);
 
 export default {
   name: "Login",
@@ -118,15 +119,35 @@ export default {
   methods: {
     changeLogin() {
       this.loginWay = !this.loginWay;
+      this.clearData();
+    },
+    clearData() {
       this.username = '';
       this.password = '';
       this.nickname = '';
       this.email = '';
       this.phone_number = '';
     },
-    onSubmit() {
-      if(loginWay) {
-        
+    async onSubmit() {
+      let response = {};
+      if(this.loginWay) {
+        response = await signIn({
+          username: this.username,
+          password: this.password
+        })
+      } else {
+        response = await signUp({
+          username: this.username,
+          password: this.password, 
+          nickname: this.nickname,
+          email: this.email,
+          phone_number: this.phone_number
+        })
+      }
+      if(response.code === 0) {
+        $router.back();
+      } else {
+        Notify({ type: 'danger', message: 'Fail' });
       }
     }
   }

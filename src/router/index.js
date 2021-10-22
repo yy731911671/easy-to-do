@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/pages/Home/Home'
 import Mine from '@/pages/Mine/Mine'
 import Login from '@/pages/Login/Login'
 import ToDo from '@/pages/ToDo/Todo'
@@ -13,14 +12,6 @@ export default new Router({
     {
       path: '/',
       redirect: '/news'
-    },
-    {
-      path: '/home',
-      name: 'Home',
-      component: Home,
-      meta: {
-        showFooter: true
-      }
     },
     {
       path: '/mine',

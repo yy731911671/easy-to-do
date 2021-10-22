@@ -4,12 +4,8 @@
       <div class="login_header">
         <h2 class="login_logo">Easy-To-Do</h2>
         <div class="login_header_title">
-          <span :class="{ on: loginWay }" @click="changeLogin"
-          >Sign In</span
-          >
-          <span :class="{ on: !loginWay }" @click="changeLogin"
-          >Sign Up</span
-          >
+          <span :class="{ on: loginWay }" @click="changeLogin">Sign In</span>
+          <span :class="{ on: !loginWay }" @click="changeLogin">Sign Up</span>
         </div>
       </div>
       <van-form @submit="onSubmit" class="form">
@@ -83,7 +79,7 @@
         </div>
         <div style="margin: 16px">
           <van-button round block type="info" native-type="submit"
-          >Submit</van-button
+            >Submit</van-button
           >
         </div>
       </van-form>
@@ -95,81 +91,177 @@
 </template>
 
 <script>
-  import Vue from "vue";
-  import { Form, Icon, Field, Button } from 'vant';
-  Vue.use(Icon);
-  Vue.use(Form);
-  Vue.use(Field);
-  Vue.use(Button);
+import Vue from "vue";
+import { Form, Icon, Field, Button, Notify, Dialog } from "vant";
+import { signIn, signUp } from "@/api/index";
+Vue.use(Icon);
+Vue.use(Form);
+Vue.use(Field);
+Vue.use(Button);
+Vue.use(Notify);
+Vue.use(Dialog);
 
-  export default {
-    name: "Login",
-    data() {
-      return {
-        loginWay: true,
-        username: '',
-        password: '',
-        nickname: '',
-        email: '',
-        phone_number: ''
-      };
+export default {
+  name: "Login",
+  data() {
+    return {
+      loginWay: true,
+      username: "",
+      password: "",
+      nickname: "",
+      email: "",
+      phone_number: "",
+    };
+  },
+  methods: {
+    changeLogin() {
+      this.loginWay = !this.loginWay;
+      this.clearData();
     },
-    methods: {
-      changeLogin() {
-        this.loginWay = !this.loginWay;
-        this.username = '';
-        this.password = '';
-        this.nickname = '';
-        this.email = '';
-        this.phone_number = '';
-      },
-      onSubmit(values) {
-        console.log(values,'submit', this.username);
+    clearData() {
+      this.username = "";
+      this.password = "";
+      this.nickname = "";
+      this.email = "";
+      this.phone_number = "";
+    },
+    onSubmit() {
+      if (this.loginWay) {
+        this.onHandleSignIn();
+      } else {
+        this.onHandleSignUp();
       }
-    }
-  };
+    },
+    async onHandleSignIn() {
+      if (this.username === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the user name",
+        }).then(() => {
+          return;
+        });
+      } else if (this.password === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the password",
+        }).then(() => {
+          return;
+        });
+      } else {
+        // const response = await signIn({
+        //   username: this.username,
+        //   password: this.password,
+        // });
+        const response = { code: 0 };
+        if (response.code === 0) {
+          localStorage.setItem('ifLogin', 'true');
+          this.$router.replace("/news");
+        } else {
+          Notify({ type: "danger", message: response.message });
+        }
+      }
+    },
+    async onHandleSignUp() {
+      if (this.username === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the user name",
+        }).then(() => {
+          return;
+        });
+      } else if (this.password === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the password",
+        }).then(() => {
+          return;
+        });
+      } else if (this.nickname === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the nickname",
+        }).then(() => {
+          return;
+        });
+      } else if (this.email === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the email",
+        }).then(() => {
+          return;
+        });
+      } else if (this.phone_number === "") {
+        Dialog.alert({
+          title: "Fail",
+          message: "Please fill in the phone number",
+        }).then(() => {
+          return;
+        });
+      } else {
+        // const response = await signUp({
+        //   username: this.username,
+        //   password: this.password,
+        //   nickname: this.nickname,
+        //   email: this.email,
+        //   phone_number: this.phone_number,
+        // });
+        const response = { code: 0 };
+        if (response.code === 0) {
+          Dialog.alert({
+            title: "Success",
+            message: "Congratulations on your successful registration",
+          }).then(() => {
+            this.changeLogin();
+          });
+        } else {
+          Notify({ type: "danger", message: response.message });
+        }
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
-  .loginContainer {
-    width: 100%;
-    height: 100%;
-  }
-  .loginInner {
-    padding-top: 60px;
-    width: 80%;
-    margin: 0 auto;
-  }
-  .login_logo {
-    font-size: 40px;
-    font-weight: blod;
-    color: #00a7d0;
-    text-align: center;
-  }
-  .login_header_title {
-    text-align: center;
-  }
-  .login_header_title > span {
-    font-size: 16px;
-    padding-bottom: 6px;
-    margin: 30px;
-  }
-  .on {
-    color: #00a7d0;
-    font-weight: 700;
-    border-bottom: 2px solid #00a7d0;
-  }
-  .form {
-    margin-top: 15px;
-  }
-  .go_back {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    width: 30px;
-    height: 30px;
-    font-size: 20px;
-    color: #999;
-    text-align: center;
-  }
+.loginContainer {
+  width: 100%;
+  height: 100%;
+}
+.loginInner {
+  padding-top: 60px;
+  width: 80%;
+  margin: 0 auto;
+}
+.login_logo {
+  font-size: 40px;
+  font-weight: blod;
+  color: #00a7d0;
+  text-align: center;
+}
+.login_header_title {
+  text-align: center;
+}
+.login_header_title > span {
+  font-size: 16px;
+  padding-bottom: 6px;
+  margin: 30px;
+}
+.on {
+  color: #00a7d0;
+  font-weight: 700;
+  border-bottom: 2px solid #00a7d0;
+}
+.form {
+  margin-top: 15px;
+}
+.go_back {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  color: #999;
+  text-align: center;
+}
 </style>

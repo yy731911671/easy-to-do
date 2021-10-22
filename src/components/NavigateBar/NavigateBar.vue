@@ -59,6 +59,7 @@ export default {
   align-items: center;
   justify-content: space-around;
   border-top: 1px #e4e4e4 solid;
+  background-color: #fff;
 }
 .guide_item {
   display: flex;

@@ -1,6 +1,8 @@
 <template>
   <div class="news-title">
-    <HeaderTop title="News"></HeaderTop>
+    <HeaderTop title="News">
+      <div slot="right" class="right_slot" @click="postNews"><van-icon name="add-o" size="40" color="#ED6A0C" /></div>
+    </HeaderTop>
     <van-list
       v-model="loading"
       :finished="finished"
@@ -8,11 +10,11 @@
       @load="onLoad"
     >
       <div class="data-list" v-for="item in newsData">
-        <div class="detail" @click="getDataId(item)">
+        <div class="detail" @click="getDataId(item.id)">
           <div class="title van-multi-ellipsis--l2">
             {{item.title}}
           </div>
-          <div class="brief van-multi-ellipsis--l2">user:admin &nbsp;&nbsp;&nbsp;&nbsp;  {{item.time}}</div>
+          <div class="brief van-multi-ellipsis--l2">user:{{item.author}} &nbsp;&nbsp;&nbsp;&nbsp;  {{item.publishTime}}</div>
         </div>
       </div>
     </van-list>
@@ -23,13 +25,16 @@
   import Vue from 'vue'
   import {fetchNewsIdList} from '../../api/index'
   import HeaderTop from '@/components/HeaderTop/HeaderTop.vue'
-  import { Button, Cell,Row ,Col, List,Divider } from 'vant';
+  import { Button, Cell,Row ,Col, List,Divider,Icon} from 'vant';
+  import { newsList} from "@/api/index";
+
   Vue.use(Button);
   Vue.use(List);
   Vue.use(Cell);
   Vue.use(Row);
   Vue.use(Col);
   Vue.use(Divider);
+  Vue.use(Icon);
     export default {
       name: "News",
       components: {
@@ -46,26 +51,26 @@
       methods: {
         onLoad() {
           // 异步更新数据
-          this.$http.get('https://hacker-news.firebaseio.com/v0/askstories.json?print=pretty')
-            .then(res=>{
+          newsList().then(res=>{
+            console.log(res)
               let data = res.data
-              for(let i = 0; i < 30; i++) {
-                this.newsId.push(data[i])
-              }
-              this.newsId.forEach(item=>{
-                this.$http.get(`https://hacker-news.firebaseio.com/v0/item/${item}.json?print=pretty`)
-                  .then(res=>{
-                    console.log(res.data)
-                    let time = this.getTime(res.data.time)
-                    console.log(time)
-                    this.newsData.push({
-                      title:res.data.title,
-                      id:item,
-                      text:res.data.text,
-                      time:time
-                    })
-                  })
+              let records = data.records
+              console.log(records)
+              // author: "lheng"
+              // content: "aaa"
+              // id: 3
+              // publishTime: "2021-10-31 23:59:00"
+              // title: "1"
+              records.forEach(item=>{
+                this.newsData.push({
+                  id:item.id,
+                  title:item.title,
+                  author:item.author,
+                  content:item.content,
+                  publishTime:item.publishTime
+                })
               })
+              console.log(this.newsData)
             }).catch(err=>{
             console.log(err)
           })
@@ -84,12 +89,17 @@
           let s = date.getSeconds();
           return Y+M+D+h+m+s
         },
-        getDataId(item){
+        getDataId(id){
           this.$router.push({
             name: 'NewsDetail',
             params: {
-              item: item,
+              id: id,
             }
+          })
+        },
+        postNews() {
+          this.$router.push({
+            name: 'PostNews',
           })
         }
       },
@@ -118,5 +128,8 @@
     border-bottom: solid 1px #cbcaca;
     padding-bottom: 5px;
   }
-
+  .right_slot{
+    position: absolute;
+    left: 88%;
+  }
 </style>

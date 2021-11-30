@@ -7,19 +7,15 @@
     <div class="authorization-container">
       <van-form @submit="onSubmit">
         <van-field
-          v-model="userId"
-          name="userid"
-          label="User ID"
-          placeholder="User ID"
+          v-model="username"
+          name="username"
+          label="User Name"
+          placeholder="User Name"
         />
         <div class="role_type">Role Type</div>
         <div class="radio">
           <label v-for="(item, index) in radioData" :key="index">
-            <input
-              type="radio"
-              v-model="roleid"
-              :value="item.value"
-            />
+            <input type="radio" v-model="roleid" :value="item.value" />
             {{ item.name }}
           </label>
         </div>
@@ -35,6 +31,7 @@
 
 <script>
 import HeaderTop from "@/components/HeaderTop/HeaderTop.vue";
+import { updateAuthority } from "@/api/index";
 import Vue from "vue";
 import {
   Form,
@@ -58,25 +55,35 @@ export default {
   name: "Authorization",
   data() {
     return {
-      userId: "",
+      username: "",
       radioData: [
-        { 
-          name: 'common user',
-          value: 1 },
-        { 
-          name: 'publisher',
-          value: 2 },
-        { 
-          name: 'administrator',
-          value: 3 },
+        {
+          name: "common user",
+          value: 1,
+        },
+        {
+          name: "publisher",
+          value: 2,
+        },
+        {
+          name: "administrator",
+          value: 3,
+        },
       ],
-      roleid: 1 
-
+      roleid: 1,
     };
   },
   methods: {
-    onSubmit() {
-      console.log(this.userId, this.radio);
+    async onSubmit() {
+      const response = await updateAuthority({
+        username: this.username,
+        roleId: this.roleid,
+      });
+      if (response.code === 0) {
+        Notify({ type: "success", message: response.msg });
+      } else {
+        Notify({ type: "danger", message: response.msg });
+      }
     },
     goTo(path) {
       this.$router.replace(path);

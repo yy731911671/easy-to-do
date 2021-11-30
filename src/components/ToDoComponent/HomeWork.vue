@@ -77,46 +77,48 @@
 
 <script>
 import Vue from "vue";
-import { Button, Overlay, Form, Field } from "vant";
-
+import { Button, Overlay, Form, Field, Notify } from "vant";
+import { addHomework, updateHomework, getHomework, deleteHomework } from "@/api/index";
 Vue.use(Button);
 Vue.use(Overlay);
 Vue.use(Form);
 Vue.use(Field);
+Vue.use(Notify);
 export default {
   name: "Homework",
   data() {
     return {
       show: false,
-      homeworkList: [
-        {
-          id: 1,
-          date: "2021-11-27 00:00",
-          courseName: "SWEN",
-          content: "HW7",
-          deadline: "2021-12-1 00:00",
-          studentId: 2,
-        },
-        {
-          id: 1,
-          date: "2021-11-27 00:00",
-          courseName: "SWEN",
-          content: "HW7",
-          deadline: "2021-12-1 00:00",
-          studentId: 2,
-        },
-      ],
+      homeworkList: [],
       formField: {
         date: "",
         courseName: "",
         content: "",
         deadline: "",
       },
+      submitType: 0, //1: create 2: update
+      userId: "",
+      id: "",
     };
   },
-  created() {},
+  created() {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    this.userId = userInfo.id;
+    this.getList();
+  },
   methods: {
+    async getList() {
+      const response = await getHomework({
+        userId: this.userId
+      });
+      if (response.code === 0) {
+        this.homeworkList = response.data;
+      } else {
+        Notify({ type: "danger", message: response.msg });
+      }
+    },
     handleCreate() {
+      this.submitType = 1;
       this.show = true;
     },
     handleUpdate(item) {
@@ -125,10 +127,42 @@ export default {
       this.formField.courseName = item.courseName;
       this.formField.content = item.content;
       this.formField.deadline = item.deadline;
+      this.id = item.id;
+      this.submitType = 2;
+      this.show = true;
     },
-    handleDelete(id) {},
-    onSubmit() {
-      this.onCancel();
+    async handleDelete(id) {
+      const response = await deleteHomework({
+        id,
+      });
+      if (response.code === 0) {
+        Notify({ type: "success", message: response.msg });
+        this.getList();
+      } else {
+        Notify({ type: "danger", message: response.msg });
+      }
+    },
+    async onSubmit() {
+      let response = {};
+      if (this.submitType === 1) {
+         response = await addHomework({
+          ...this.formField,
+          userId: this.userId
+        });
+      } else {
+          response = await updateHomework({
+          ...this.formField,
+          userId: this.userId,
+          id: this.id
+        });
+      }
+
+      if (response.code === 0) {
+        Notify({ type: "success", message: response.msg });
+        this.onCancel();
+      } else {
+        Notify({ type: "danger", message: response.msg });
+      }     
     },
     onCancel() {
       this.show = false;
@@ -138,6 +172,7 @@ export default {
         content: "",
         deadline: "",
       };
+      this.getList();
     },
   },
 };

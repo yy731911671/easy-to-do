@@ -9,9 +9,9 @@
         Nickname: {{nickname}}
       </van-cell>
       <van-cell value="Sign In / Sign Up" size="large" @click="goTo('/login')" v-if="!ifLogin"/>
-      <van-cell value="Todo-List" @click="goTo('/todo')"/>
+      <van-cell value="Todo-List" @click="goTo('/todo')" v-if="ifLogin"/>
       <van-cell value="Authorization" @click="goTo('/authorization')" v-if="roleId===3"/>
-      <van-cell value="Change Password" @click="goTo('/changePassword')" />
+      <van-cell value="Change Password" @click="goTo('/changePassword')" v-if="ifLogin"/>
       <div style="margin: 16px">
           <van-button round block type="danger" v-if="ifLogin" @click="onLogOut"
             >Log Out</van-button

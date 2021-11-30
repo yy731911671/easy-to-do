@@ -77,58 +77,97 @@
 
 <script>
 import Vue from "vue";
-import { Button, Overlay, Form, Field } from "vant";
-
+import { Button, Overlay, Form, Field, Notify } from "vant";
+import {
+  addActivity,
+  updateActivity,
+  getActivity,
+  deleteActivity,
+} from "@/api/index";
 Vue.use(Button);
 Vue.use(Overlay);
 Vue.use(Form);
 Vue.use(Field);
+Vue.use(Notify);
 export default {
   name: "Activity",
   data() {
     return {
       show: false,
-      activityList: [
-        {
-          id: 1,
-          date: "2021-11-28",
-          activityName: "ping-pang",
-          location: "gym",
-          content: "play ping pang",
-          studentId: 2,
-        },
-        {
-          id: 1,
-          date: "2021-11-28",
-          activityName: "ping-pang",
-          location: "gym",
-          content: "play ping pang",
-          studentId: 2,
-        },
-      ],
+      activityList: [],
       formField: {
         date: "",
         activityName: "",
         location: "",
         content: "",
       },
+      submitType: 0, //1: create 2: update
+      userId: "",
+      id: "",
     };
   },
-  created() {},
+  created() {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    this.userId = userInfo.id;
+    this.getList();
+  },
   methods: {
+    async getList() {
+      const response = await getActivity({
+        userId: this.userId,
+      });
+      if (response.code === 0) {
+        this.activityList = response.data;
+      } else {
+        Notify({ type: "danger", message: response.msg });
+      }
+    },
     handleCreate() {
+      this.submitType = 1;
       this.show = true;
     },
     handleUpdate(item) {
-      this.show = true;
       this.formField.date = item.date;
       this.formField.activityName = item.activityName;
       this.formField.location = item.location;
       this.formField.content = item.content;
+      this.id = item.id;
+      this.submitType = 2;
+      this.show = true;
     },
-    handleDelete(id) {},
-    onSubmit() {
-      this.onCancel();
+    async handleDelete(id) {
+      const response = await deleteActivity({
+        id,
+      });
+      if (response.code === 0) {
+        Notify({ type: "success", message: response.msg });
+        this.getList();
+      } else {
+        Notify({ type: "danger", message: response.msg });
+      }
+    },
+    async onSubmit() {
+      let response = {};
+      if (this.submitType === 1) {
+        console.log('123')
+         response = await addActivity({
+          ...this.formField,
+          userId: this.userId
+        });
+      } else {
+          response = await updateActivity({
+          ...this.formField,
+          userId: this.userId,
+          id: this.id
+        });
+      }
+
+      if (response.code === 0) {
+        Notify({ type: "success", message: response.msg });
+        this.onCancel();
+      } else {
+        Notify({ type: "danger", message: response.msg });
+      }     
     },
     onCancel() {
       this.show = false;
@@ -138,6 +177,7 @@ export default {
         location: "",
         content: "",
       };
+      this.getList();
     },
   },
 };

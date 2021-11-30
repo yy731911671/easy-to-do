@@ -41,6 +41,7 @@ import {
   RadioGroup,
   Radio,
 } from "vant";
+import { updatePassword } from "@/api/index";
 Vue.use(Icon);
 Vue.use(Form);
 Vue.use(Field);
@@ -55,11 +56,27 @@ export default {
     return {
       oldPassword: "",
       newPassword: "",
+      username:"",
     };
   },
+  beforeMount() {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    this.username = userInfo.username;
+  },
   methods: {
-    onSubmit() {
-      console.log(this.oldPassword, this.newPassword);
+    async onSubmit() {
+      const response = await updatePassword({
+        username: this.username,
+        oldPassword: this.oldPassword,
+        newPassword: this.newPassword
+      });
+      if (response.code === 0) {
+          Notify({ type: "success", message: response.msg });
+          this.oldPassword = "";
+          this.newPassword = "";  
+        } else {
+          Notify({ type: "danger", message: response.msg });
+        }
     },
     goTo(path) {
       this.$router.replace(path);

@@ -13,7 +13,9 @@
           <div class="course-content">
             <div class="course-date">Date: {{ item.date }}</div>
             <div class="course-classroom">Classroom: {{ item.classroom }}</div>
-            <div class="course-classname">Course name: {{ item.courseName }}</div>
+            <div class="course-classname">
+              Course name: {{ item.courseName }}
+            </div>
             <div class="course-duration">Duration: {{ item.duration }}</div>
           </div>
           <div class="course-operate">
@@ -32,7 +34,7 @@
       <van-overlay :show="show">
         <div class="wrapper">
           <div class="block">
-            <van-form >
+            <van-form>
               <van-field
                 v-model="formField.date"
                 name="date"
@@ -58,10 +60,13 @@
                 placeholder="duration"
               />
               <div class="update-button">
-                <van-button plain hairline type="primary" @click="onSubmit">Submit</van-button>
-                <van-button plain hairline type="info" @click="onCancel">Cancel</van-button>
+                <van-button plain hairline type="primary" @click="onSubmit"
+                  >Submit</van-button
+                >
+                <van-button plain hairline type="info" @click="onCancel"
+                  >Cancel</van-button
+                >
               </div>
-              
             </van-form>
           </div>
         </div>
@@ -72,58 +77,91 @@
 
 <script>
 import Vue from "vue";
-import { Button, Overlay, Form, Field } from "vant";
-
+import { Button, Overlay, Form, Field, Notify } from "vant";
+import { addCourse, updateCourse, getCourse, deleteCourse } from "@/api/index";
 Vue.use(Button);
 Vue.use(Overlay);
 Vue.use(Form);
 Vue.use(Field);
+Vue.use(Notify);
 export default {
   name: "Course",
   data() {
     return {
       show: false,
-      courseList: [
-        {
-          id: 1,
-          date: "2022-11-28",
-          classroom: "room1",
-          courseName: "SWEN",
-          duration: 1.5,
-          studentId: 2,
-        },
-        {
-          id: 1,
-          date: "2022-11-28",
-          classroom: "room1",
-          courseName: "SWEN",
-          duration: 1.5,
-          studentId: 2,
-        },
-      ],
+      courseList: [],
       formField: {
         date: "",
         classroom: "",
         courseName: "",
-        duration: ""
+        duration: "",
       },
+      submitType: 0, //1: create 2: update
+      userId: "",
+      id: "",
     };
   },
-  created() {},
+  created() {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    this.userId = userInfo.id;
+    this.getList();
+  },
   methods: {
+    async getList() {
+      const response = await getCourse({
+        userId: this.userId
+      });
+      if (response.code === 0) {
+        this.courseList = response.data;
+      } else {
+        Notify({ type: "danger", message: response.msg });
+      }
+    },
     handleCreate() {
+      this.submitType = 1;
       this.show = true;
     },
     handleUpdate(item) {
-      this.show = true;
       this.formField.date = item.date;
       this.formField.classroom = item.classroom;
       this.formField.courseName = item.courseName;
       this.formField.duration = item.duration;
+      this.id = item.id;
+      this.submitType = 2;
+      this.show = true;
     },
-    handleDelete(id) {},
-    onSubmit() {
-      this.onCancel();
+    async handleDelete(id) {
+      const response = await deleteCourse({
+        id,
+      });
+      if (response.code === 0) {
+        Notify({ type: "success", message: response.msg });
+        this.getList();
+      } else {
+        Notify({ type: "danger", message: response.msg });
+      }
+    },
+    async onSubmit() {
+      let response = {};
+      if (this.submitType === 1) {
+         response = await addCourse({
+          ...this.formField,
+          userId: this.userId
+        });
+      } else {
+          response = await updateCourse({
+          ...this.formField,
+          userId: this.userId,
+          id: this.id
+        });
+      }
+
+      if (response.code === 0) {
+        Notify({ type: "success", message: response.msg });
+        this.onCancel();
+      } else {
+        Notify({ type: "danger", message: response.msg });
+      }     
     },
     onCancel() {
       this.show = false;
@@ -131,9 +169,10 @@ export default {
         date: "",
         classroom: "",
         courseName: "",
-        duration: ""
-      }
-    }
+        duration: "",
+      };
+      this.getList();
+    },
   },
 };
 </script>

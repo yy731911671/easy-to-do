@@ -67,9 +67,9 @@
             :rules="[{ required: true, message: 'Please fill in the Email' }]"
           />
           <van-field
-            v-model="phone_number"
+            v-model="phoneNumber"
             type="tel"
-            name="phone_number"
+            name="phoneNumber"
             label="Phone"
             placeholder="Phone number"
             :rules="[
@@ -110,7 +110,7 @@ export default {
       password: "",
       nickname: "",
       email: "",
-      phone_number: "",
+      phoneNumber: "",
     };
   },
   methods: {
@@ -123,7 +123,7 @@ export default {
       this.password = "";
       this.nickname = "";
       this.email = "";
-      this.phone_number = "";
+      this.phoneNumber = "";
     },
     onSubmit() {
       if (this.loginWay) {
@@ -148,25 +148,11 @@ export default {
           return;
         });
       } else {
-        // const response = await signIn({
-        //   username: this.username,
-        //   password: this.password,
-        // });
-        const response = {
-          code: "0",
-          msg: "登录成功!",
-          data: {
-            id: 3,
-            username: "liuh",
-            password: "B149E810EB6D432EED22E5D0540BE96A",
-            nickname: "lh",
-            roleid: 3,
-            email: "100@163.com",
-            phoneNumber: "1234567890",
-          },
-        };
-
-        if (response.code === "0") {
+        const response = await signIn({
+          username: this.username,
+          password: this.password,
+        });
+        if (response.code === 0) {
           localStorage.setItem("ifLogin", "true");
           localStorage.setItem("userInfo", JSON.stringify(response.data));
           this.$router.replace("/news");
@@ -204,7 +190,7 @@ export default {
         }).then(() => {
           return;
         });
-      } else if (this.phone_number === "") {
+      } else if (this.phoneNumber === "") {
         Dialog.alert({
           title: "Fail",
           message: "Please fill in the phone number",
@@ -212,14 +198,14 @@ export default {
           return;
         });
       } else {
-        // const response = await signUp({
-        //   username: this.username,
-        //   password: this.password,
-        //   nickname: this.nickname,
-        //   email: this.email,
-        //   phone_number: this.phone_number,
-        // });
-        const response = { code: 0 };
+        const response = await signUp({
+          username: this.username,
+          password: this.password,
+          nickname: this.nickname,
+          roleid: 1,
+          email: this.email,
+          phoneNumber: this.phoneNumber,
+        });
         if (response.code === 0) {
           Dialog.alert({
             title: "Success",
@@ -228,7 +214,7 @@ export default {
             this.changeLogin();
           });
         } else {
-          Notify({ type: "danger", message: response.message });
+          Notify({ type: "danger", message: response.msg });
         }
       }
     },

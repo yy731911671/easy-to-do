@@ -4,9 +4,11 @@ import Mine from '@/pages/Mine/Mine'
 import Login from '@/pages/Login/Login'
 import ToDo from '@/pages/ToDo/Todo'
 import News from '../pages/News/News'
-import NewsDetail from '../pages/News/NewsDetail'
+import NewsDetail from '../pages/News/NewsDetail' 
 import Authorization from '../pages/Authorization/Authorization'
 import ChangePassword from '../pages/ChangePassword/ChangePassword'
+import PostNews from '../pages/News/PostNews'
+import EditNews from '../pages/News/EditNews'
 Vue.use(Router)
 
 export default new Router({
@@ -57,6 +59,14 @@ export default new Router({
       path: '/changePassword',
       name: 'ChangePassword',
       component: ChangePassword
+    }, {
+      path: '/postNews',
+      name: 'PostNews',
+      component: PostNews
+    }, {
+      path: '/editNews',
+      name: 'EditNews',
+      component: EditNews
     }
   ]
 })

@@ -1,6 +1,8 @@
 <template>
   <header class="header">
     <span class="header_title">{{title}}</span>
+    <slot name="right" ></slot>
+    <slot name="left" ></slot>
   </header>
 </template>
 

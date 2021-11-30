@@ -1,0 +1,59 @@
+$base-color: #FFE60F;
+@function rem($px){
+  $size :75;
+  @return ($px / $size) * 1rem;
+}
+
+.theme-color{
+  color: $base-color;
+}
+.theme-bg{
+  background-color: $base-color;
+}
+
+// 主题颜色
+$sub1: #8694e2;
+$sub2: #d8af3b;
+$sub3: #c7a6c1;
+$sub4: #6e7d8f;
+$sub5: #ec9690;
+$sub6: #89cccb;
+$sub7: #62ad97;
+$sub8: #9a7cd0;
+$sub9: #d3cc72;
+$sub10: #16a4e4;
+.sub-color1{color: $sub1;}
+.sub-color2{color: $sub2;}
+.sub-color3{color: $sub3;}
+.sub-color4{color: $sub4;}
+.sub-color5{color: $sub5;}
+.sub-color6{color: $sub6;}
+.sub-color7{color: $sub7;}
+.sub-color8{color: $sub8;}
+.sub-color9{color: $sub9;}
+.sub-color10{color: $sub10;}
+// bg
+.sub-bg1{background: $sub1;}
+.sub-bg2{background: $sub2;}
+.sub-bg3{background: $sub3;}
+.sub-bg4{background: $sub4;}
+.sub-bg5{background: $sub5;}
+.sub-bg6{background: $sub6;}
+.sub-bg7{background: $sub7;}
+.sub-bg8{background: $sub8;}
+.sub-bg9{background: $sub9;}
+.sub-bg10{background: $sub10};
+
+button{
+  width: 100%;
+  color: #484848;
+  background: $base-color;
+  font-size: rem(34);
+  height: rem(88);
+  border-radius: rem(88);
+  line-height: rem(88);
+  margin: rem(20) 0;
+}
+button:active{
+  opacity: .8;
+}

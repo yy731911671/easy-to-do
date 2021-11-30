@@ -14,7 +14,10 @@
           <div class="title van-multi-ellipsis--l2">
             {{item.title}}
           </div>
-          <div class="brief van-multi-ellipsis--l2">user:{{item.author}} &nbsp;&nbsp;&nbsp;&nbsp;  {{item.publishTime}}</div>
+          <div class="brief van-multi-ellipsis--l2">user:{{item.author}}
+          <span>
+             {{item.publishTime}}
+          </span></div>
         </div>
       </div>
     </van-list>
@@ -79,16 +82,6 @@
             // 数据全部加载完成
             this.finished = true;
         },
-        getTime(time){
-          let date = new Date(time)
-          let Y = date.getFullYear() + '-';
-          let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-          let D = date.getDate() + ' ';
-          let h = date.getHours() + ':';
-          let m = date.getMinutes() + ':';
-          let s = date.getSeconds();
-          return Y+M+D+h+m+s
-        },
         getDataId(id){
           this.$router.push({
             name: 'NewsDetail',
@@ -123,6 +116,8 @@
   }
 
   .data-list .detail .brief {
+    display: flex;
+    justify-content: space-between;
     font-size: 4vw;
     color: #999999;
     border-bottom: solid 1px #cbcaca;

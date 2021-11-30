@@ -102,7 +102,8 @@
         } else {
           //send request
           console.log(this.title,this.content)
-          let params = {'title':this.title,
+          let params = {
+            'title':this.title,
             'publishTime':time,
             'author':this.author,
             'content':this.content

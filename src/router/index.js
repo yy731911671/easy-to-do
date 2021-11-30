@@ -5,11 +5,12 @@ import Login from '@/pages/Login/Login'
 import ToDo from '@/pages/ToDo/Todo'
 import News from '../pages/News/News'
 import NewsDetail from '../pages/News/NewsDetail'
+import Authorization from '../pages/Authorization/Authorization'
+import ChangePassword from '../pages/ChangePassword/ChangePassword'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
       redirect: '/news'
     },
@@ -41,10 +42,21 @@ export default new Router({
       meta: {
         showFooter: true
       }
-    },{
+    },
+    {
       path: '/newsDetail',
       name: 'NewsDetail',
       component: NewsDetail
     },
+    {
+      path: '/authorization',
+      name: 'Authorization',
+      component: Authorization
+    },
+    {
+      path: '/changePassword',
+      name: 'ChangePassword',
+      component: ChangePassword
+    }
   ]
 })

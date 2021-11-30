@@ -4,9 +4,14 @@
   <section class="mine">
     <HeaderTop title="Mine"></HeaderTop>
     <div class="mine-container">
-      <van-cell value="Sign in / Sign Up" size="large" @click="goTo('/login')" v-if="!ifLogin"/>
-      <van-cell value="Todo-List" />
-      <van-cell value="Authorization" />
+      <van-cell v-if="ifLogin">
+        <van-icon name="user-o" />
+        Nickname: {{nickname}}
+      </van-cell>
+      <van-cell value="Sign In / Sign Up" size="large" @click="goTo('/login')" v-if="!ifLogin"/>
+      <van-cell value="Todo-List" @click="goTo('/todo')"/>
+      <van-cell value="Authorization" @click="goTo('/authorization')" v-if="roleId===3"/>
+      <van-cell value="Change Password" @click="goTo('/changePassword')" />
       <div style="margin: 16px">
           <van-button round block type="danger" v-if="ifLogin" @click="onLogOut"
             >Log Out</van-button
@@ -29,7 +34,9 @@ export default {
   name: 'Mine',
   data () {
     return {
-      ifLogin: true
+      ifLogin: true,
+      nickname: '',
+      roleId: 1,
     }
   },
   components: {
@@ -39,6 +46,9 @@ export default {
     const ifLogin = localStorage.getItem('ifLogin');
     if(ifLogin === 'true') {
       this.ifLogin = true;
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      this.nickname = userInfo.nickname;
+      this.roleId = userInfo.roleid;
     } else {
       this.ifLogin = false;
     }

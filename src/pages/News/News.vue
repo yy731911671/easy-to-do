@@ -53,8 +53,8 @@
           finished: false,
           newsId:[],
           newsData:[],
-          userInfo:JSON.parse(localStorage.getItem('userInfo')) || null,
-          roleId:this.userInfo ? this.userInfo : 0,
+          userInfo:{},
+          roleId: 0,
           ifLogin: localStorage.getItem('ifLogin')
         };
       },
@@ -64,6 +64,10 @@
           this.ifLogin = true;
         } else {
           this.ifLogin = false;
+        }
+        this.userInfo = JSON.parse(localStorage.getItem('userInfo')) || null
+        if (this.userInfo){
+           this.roleId = this.userInfo.roleid
         }
       },
       methods: {

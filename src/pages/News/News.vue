@@ -1,9 +1,10 @@
 <template>
   <div class="news-title">
     <HeaderTop title="News">
-      <div slot="right" class="right_slot" @click="postNews"><van-icon name="add-o" size="40" color="#ED6A0C" /></div>
+      <div v-if="roleId == 3 || roleId == 2" slot="right" class="right_slot" @click="postNews"><van-icon name="add-o" size="40" color="#ED6A0C" /></div>
     </HeaderTop>
     <van-list
+      v-if="ifLogin"
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
@@ -21,6 +22,9 @@
         </div>
       </div>
     </van-list>
+    <div class="todo-noLogin" v-if="!ifLogin">
+      Please sign in first!
+    </div>
   </div>
 </template>
 
@@ -48,8 +52,19 @@
           loading: false,
           finished: false,
           newsId:[],
-          newsData:[]
+          newsData:[],
+          userInfo:JSON.parse(localStorage.getItem('userInfo')) || null,
+          roleId:this.userInfo ? this.userInfo : 0,
+          ifLogin: localStorage.getItem('ifLogin')
         };
+      },
+      beforeMount() {
+        const ifLogin = localStorage.getItem('ifLogin');
+        if(ifLogin === 'true') {
+          this.ifLogin = true;
+        } else {
+          this.ifLogin = false;
+        }
       },
       methods: {
         onLoad() {
@@ -126,5 +141,13 @@
   .right_slot{
     position: absolute;
     left: 88%;
+  }
+  .todo-noLogin {
+    width: 100%;
+    margin-top: 200px;
+    text-align: center;
+    color: #00a7d0;
+    font-weight:bolder;
+    font-size: 30px;
   }
 </style>

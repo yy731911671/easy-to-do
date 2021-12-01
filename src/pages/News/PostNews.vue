@@ -73,10 +73,15 @@
         title: "",
         author:"",
         content: "",
+        userInfo:JSON.parse(localStorage.getItem('userInfo'))
       };
     },
+    created() {
+      if(this.userInfo.roleid !== 3 && this.userInfo.roleid !== 2) {
+        this.$router.replace("/news");
+      }
+    },
     methods: {
-
       clearData() {
         this.title = "";
         this.content = "";

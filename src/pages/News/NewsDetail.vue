@@ -1,7 +1,7 @@
 <template>
   <div>
     <HeaderTop title="News">
-      <div slot="right" class="right_slot" @click="getMore">
+      <div slot="right" class="right_slot" v-if="roleId == 3 || roleId == 2" @click="getMore">
         <van-icon name="more-o" size="40" color="#ED6A0C" />
       </div>
       <div slot="left" class="go_back" @click="$router.back()">
@@ -33,7 +33,7 @@
               {{item.comment}}
             </div>
             <div class="brief">{{item.nickname}} &nbsp;&nbsp;&nbsp;&nbsp;  {{item.createTime}}
-              <span class="delete-comment" @click="deleteComment(item.id)">
+              <span class="delete-comment" v-if="roleId == 3 || roleId == 2" @click="deleteComment(item.id)">
                 delete
               </span>
             </div>
@@ -108,25 +108,21 @@
             icon: 'https://img01.yzcdn.cn/vant/custom-icon-water.png',
           },
         ],
+        userInfo:JSON.parse(localStorage.getItem('userInfo')),
+        roleId:0,
       }
     },
     created() {
-      console.log('time',time)
+      this.roleId = this.userInfo.roleid
       this.newsId = this.$route.params.id
       if(this.newsId){
         localStorage.setItem('newsId',this.newsId);
-        console.log('ss',this.newsId)
       } else {
         this.newsId = localStorage.getItem('newsId')
       }
       newsDetail(this.newsId).then(res=>{
           let data = res.data
           this.newsItem = data
-          // this.newsItem.id = data.id
-          // this.newsItem.title = data.title
-          // this.newsItem.author = data.author
-          // this.newsItem.content = data.content,
-          // this.newsItem.time = data.publishTime
           console.log(data,this.newsItem)
         })
     },
@@ -201,6 +197,9 @@
       },
       getSelectMore(v){
         console.log(v)
+        if(this.userInfo.roleid !== 3 || this.userInfo.roleid !== 2) {
+          this.showShare = false
+        }
         if(v.name=="Update") {
           this.$router.push({
             name: 'EditNews',

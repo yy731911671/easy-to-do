@@ -75,9 +75,14 @@
           publishTime: "",
           title: ""
         },
+        userInfo:JSON.parse(localStorage.getItem('userInfo'))
       };
     },
     created() {
+      console.log(this.userInfo.roleid)
+      if(this.userInfo.roleid !== 3 && this.userInfo.roleid !== 2) {
+        this.$router.replace("/news");
+      }
       this.newsId = this.$route.params.id
       if(!this.newsId){
         this.newsId = localStorage.getItem('newsId')

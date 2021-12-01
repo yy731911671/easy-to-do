@@ -74,7 +74,7 @@ Easy to-do is platform for UTA-BUPT exchange students. It provide the convenienc
 
 ​	Browser courses details, homework and activities
 
-​	Add/Delete courses, homework and activities
+​	Add/Delete/Update courses, homework and activities
 
 #### Authority
 
